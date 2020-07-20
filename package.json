@@ -8,6 +8,7 @@
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon",
     "start:prod": "cross-env NODE_ENV=production node index",
+    "start:pm2": "cross-env NODE_ENV=production pm2 start -n blog-api index.js",
     "commit": "git-cz"
   },
   "license": "MIT",
