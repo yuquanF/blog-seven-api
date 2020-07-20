@@ -2,11 +2,13 @@
 const fs = require('fs')
 const path = require('path')
 const { config } = require('lin-mizar/lin/config')
+const dotenv = require('dotenv')
 
 /**
  * 获取配置
  */
 function applyConfig() {
+  dotenv.config()
   const cwd = process.cwd()
   const files = fs.readdirSync(path.resolve(`${cwd}/app/config`))
   for (const file of files) {
