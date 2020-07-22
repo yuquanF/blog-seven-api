@@ -1,24 +1,23 @@
-import { LinRouter, getTokens } from 'lin-mizar';
-import {
-  RegisterValidator,
-  LoginValidator,
-  UpdateInfoValidator,
-  ChangePasswordValidator
-} from '../../validator/user';
-
+import { getTokens, LinRouter } from 'lin-mizar'
+import { UserDao } from '../../dao/user'
 import {
   adminRequired,
   loginRequired,
-  refreshTokenRequiredWithUnifyException
-} from '../../middleware/jwt';
-import { UserIdentityModel } from '../../model/user';
-import { UserDao } from '../../dao/user';
+  refreshTokenRequiredWithUnifyException,
+} from '../../middleware/jwt'
+import { UserIdentityModel } from '../../model/user'
+import {
+  ChangePasswordValidator,
+  LoginValidator,
+  RegisterValidator,
+  UpdateInfoValidator,
+} from '../../validator/user'
 
 const user = new LinRouter({
-  prefix: '/cms/user'
-});
+  prefix: '/api/cms/user',
+})
 
-const userDao = new UserDao();
+const userDao = new UserDao()
 
 user.linPost(
   'userRegister',
@@ -26,18 +25,18 @@ user.linPost(
   {
     permission: '注册',
     module: '用户',
-    mount: false
+    mount: false,
   },
   adminRequired,
-  async ctx => {
-    const v = await new RegisterValidator().validate(ctx);
-    await userDao.createUser(v);
+  async (ctx) => {
+    const v = await new RegisterValidator().validate(ctx)
+    await userDao.createUser(v)
     ctx.success({
       msg: '注册成功',
-      errorCode: 9
-    });
+      errorCode: 9,
+    })
   }
-);
+)
 
 user.linPost(
   'userLogin',
@@ -45,23 +44,23 @@ user.linPost(
   {
     permission: '登陆',
     module: '用户',
-    mount: false
+    mount: false,
   },
-  async ctx => {
-    const v = await new LoginValidator().validate(ctx);
+  async (ctx) => {
+    const v = await new LoginValidator().validate(ctx)
     const user = await UserIdentityModel.verify(
       v.get('body.username'),
       v.get('body.password')
-    );
+    )
     const { accessToken, refreshToken } = getTokens({
-      id: user.user_id
-    });
+      id: user.user_id,
+    })
     ctx.json({
       access_token: accessToken,
-      refresh_token: refreshToken
-    });
+      refresh_token: refreshToken,
+    })
   }
-);
+)
 
 user.linPut(
   'userUpdate',
@@ -69,18 +68,18 @@ user.linPut(
   {
     permission: '更新用户信息',
     module: '用户',
-    mount: false
+    mount: false,
   },
   loginRequired,
-  async ctx => {
-    const v = await new UpdateInfoValidator().validate(ctx);
-    await userDao.updateUser(ctx, v);
+  async (ctx) => {
+    const v = await new UpdateInfoValidator().validate(ctx)
+    await userDao.updateUser(ctx, v)
     ctx.success({
       msg: '更新用户成功',
-      errorCode: 4
-    });
+      errorCode: 4,
+    })
   }
-);
+)
 
 user.linPut(
   'userUpdatePassword',
@@ -88,23 +87,23 @@ user.linPut(
   {
     permission: '修改密码',
     module: '用户',
-    mount: false
+    mount: false,
   },
   loginRequired,
-  async ctx => {
-    const user = ctx.currentUser;
-    const v = await new ChangePasswordValidator().validate(ctx);
+  async (ctx) => {
+    const user = ctx.currentUser
+    const v = await new ChangePasswordValidator().validate(ctx)
     await UserIdentityModel.changePassword(
       user,
       v.get('body.old_password'),
       v.get('body.new_password')
-    );
+    )
     ctx.success({
       msg: '密码修改成功',
-      errorCode: 2
-    });
+      errorCode: 2,
+    })
   }
-);
+)
 
 user.linGet(
   'userGetToken',
@@ -112,18 +111,18 @@ user.linGet(
   {
     permission: '刷新令牌',
     module: '用户',
-    mount: false
+    mount: false,
   },
   refreshTokenRequiredWithUnifyException,
-  async ctx => {
-    const user = ctx.currentUser;
-    const { accessToken, refreshToken } = getTokens(user);
+  async (ctx) => {
+    const user = ctx.currentUser
+    const { accessToken, refreshToken } = getTokens(user)
     ctx.json({
       access_token: accessToken,
-      refresh_token: refreshToken
-    });
+      refresh_token: refreshToken,
+    })
   }
-);
+)
 
 user.linGet(
   'userGetPermissions',
@@ -131,14 +130,14 @@ user.linGet(
   {
     permission: '查询自己拥有的权限',
     module: '用户',
-    mount: true
+    mount: true,
   },
   loginRequired,
-  async ctx => {
-    const user = await userDao.getPermissions(ctx);
-    ctx.json(user);
+  async (ctx) => {
+    const user = await userDao.getPermissions(ctx)
+    ctx.json(user)
   }
-);
+)
 
 user.linGet(
   'getInformation',
@@ -146,13 +145,13 @@ user.linGet(
   {
     permission: '查询自己信息',
     module: '用户',
-    mount: true
+    mount: true,
   },
   loginRequired,
-  async ctx => {
-    const info = await userDao.getInformation(ctx);
-    ctx.json(info);
+  async (ctx) => {
+    const info = await userDao.getInformation(ctx)
+    ctx.json(info)
   }
-);
+)
 
-export { user };
+export { user }

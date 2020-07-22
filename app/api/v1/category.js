@@ -6,7 +6,7 @@ import { CreateOrUpdateCategoryValidator } from '../../validator/category'
 import { PositiveIdValidator } from '../../validator/common'
 
 const categoryApi = new LinRouter({
-  prefix: '/v1/category',
+  prefix: '/api/v1/category',
 })
 
 // category 的dao 数据库访问层实例

@@ -14,7 +14,7 @@ const taskDto = new TaskDao()
 const taskFileDto = new TaskFileDao()
 
 const fileApi = new LinRouter({
-  prefix: '/v1/file',
+  prefix: '/api/v1/file',
 })
 
 /**

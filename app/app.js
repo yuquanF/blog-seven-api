@@ -10,7 +10,7 @@ import { PermissionModel } from './model/permission';
  * 首页
  */
 function indexPage (app) {
-  app.context.loader.mainRouter.get('/', async ctx => {
+  app.context.loader.mainRouter.get('/api', async ctx => {
     ctx.type = 'html';
     ctx.body = `<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor:
       pointer;text-decoration: none} a:hover{text-decoration:underline; } body{ background: #fff; font-family:

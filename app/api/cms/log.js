@@ -5,7 +5,7 @@ import { PaginateValidator } from '../../validator/common'
 import { LogFindValidator } from '../../validator/log'
 
 const log = new LinRouter({
-  prefix: '/cms/log',
+  prefix: '/api/cms/log',
 })
 
 const logDao = new LogDao()

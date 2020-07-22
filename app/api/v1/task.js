@@ -6,7 +6,7 @@ import { PositiveIdValidator, SearchValidator } from '../../validator/common'
 import { CreateOrUpdateTaskValidator } from '../../validator/task'
 
 const taskApi = new LinRouter({
-  prefix: '/v1/task',
+  prefix: '/api/v1/task',
 })
 
 const taskDto = new TaskDao()
